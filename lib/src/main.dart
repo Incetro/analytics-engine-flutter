@@ -1,3 +1,4 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'services/index.dart';
@@ -9,10 +10,11 @@ class AnalyticsManager implements AnalyticsService {
   Map<String, String> _schema = {};
 
   AnalyticsManager({required List<AnalyticsProvider> enabledProviders})
-      : _allProviders = {
-          AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance),
-          AnalyticsProvider.appMetrica: AppMetricaAdapter(),
-        } {
+  : _allProviders = {
+    AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance),
+    AnalyticsProvider.appMetrica: AppMetricaAdapter(),
+    AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()),
+  } {
     if (enabledProviders.isEmpty) {
       _activeProviders = _allProviders.values.toList();
     } else {
