@@ -10,11 +10,11 @@ class AnalyticsManager implements AnalyticsService {
   late final List<AnalyticsService> _activeProviders;
   Map<String, String> _schema = {};
 
-  AnalyticsManager({required List<AnalyticsProvider> enabledProviders})
+  AnalyticsManager({required List<AnalyticsProvider> enabledProviders, bool enableAutoLogging = false})
   : _allProviders = {
     AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance),
     AnalyticsProvider.appMetrica: AppMetricaAdapter(),
-    AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()),
+    AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()..setAutoLogAppEventsEnabled(enableAutoLogging)),
   } {
     if (enabledProviders.isEmpty) {
       _activeProviders = _allProviders.values.toList();
