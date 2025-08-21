@@ -1,5 +1,6 @@
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 
 import 'services/index.dart';
 import 'utils/providers.dart';
@@ -22,6 +23,9 @@ class AnalyticsManager implements AnalyticsService {
           .map((p) => _allProviders[p]!)
           .toList();
     }
+    debugPrint(
+        '✅ [Analytics manager]  → STARTED',
+      );
   }
 
   void setSchema(Map<String, String> schema) {
