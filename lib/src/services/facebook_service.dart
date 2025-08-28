@@ -15,10 +15,19 @@ class FacebookAdapter implements AnalyticsService {
     try {
       switch (name) {
         case 'purchase':
+          final raw = params ?? {};
+
+          final amount = (raw['amount'] as num?)?.toDouble() ?? 0;
+          final currency = raw['currency'] as String? ?? 'USD';
+
+          final parameters = Map<String, dynamic>.from(raw)
+            ..remove('amount')
+            ..remove('currency');
+
           _analytics.logPurchase(
-            amount: (params?['amount'] as num?)?.toDouble() ?? 0,
-            currency: params?['currency'] as String? ?? 'USD',
-            parameters: params,
+            amount: amount,
+            currency: currency,
+            parameters: parameters,
           );
           break;
 
@@ -66,12 +75,12 @@ class FacebookAdapter implements AnalyticsService {
 
         case 'initiated_checkout':
           _analytics.logInitiatedCheckout(
-            totalPrice: (params?['totalPrice'] as num?)?.toDouble(),
+            totalPrice: (params?['total_price'] as num?)?.toDouble(),
             currency: params?['currency'] as String?,
-            contentType: params?['contentType'] as String?,
-            contentId: params?['contentId'] as String?,
-            numItems: params?['numItems'] as int?,
-            paymentInfoAvailable: params?['paymentInfoAvailable'] == true,
+            contentType: params?['content_type'] as String?,
+            contentId: params?['content_id'] as String?,
+            numItems: params?['num_items'] as int?,
+            paymentInfoAvailable: params?['payment_info_available'] == true,
           );
           break;
 
@@ -79,7 +88,7 @@ class FacebookAdapter implements AnalyticsService {
           _analytics.logSubscribe(
             price: (params?['price'] as num?)?.toDouble(),
             currency: params?['currency'] as String?,
-            orderId: params?['orderId'] as String? ?? '',
+            orderId: params?['order_id'] as String? ?? '',
           );
           break;
 
@@ -87,19 +96,19 @@ class FacebookAdapter implements AnalyticsService {
           _analytics.logStartTrial(
             price: (params?['price'] as num?)?.toDouble(),
             currency: params?['currency'] as String?,
-            orderId: params?['orderId'] as String? ?? '',
+            orderId: params?['order_id'] as String? ?? '',
           );
           break;
 
         case 'ad_impression':
           _analytics.logAdImpression(
-            adType: params?['adType'] as String? ?? '',
+            adType: params?['ad_type'] as String? ?? '',
           );
           break;
 
         case 'ad_click':
           _analytics.logAdClick(
-            adType: params?['adType'] as String? ?? '',
+            adType: params?['ad_type'] as String? ?? '',
           );
           break;
 
