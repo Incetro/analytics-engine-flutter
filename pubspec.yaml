@@ -13,6 +13,7 @@ dependencies:
   firebase_analytics: ^12.0.0
   appmetrica_plugin: ^3.3.0
   facebook_app_events: ^0.20.1
+  flutter_branch_sdk: ^8.6.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:analytics_manager/src/services/branch_service.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class AnalyticsManager implements AnalyticsService {
     AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance),
     AnalyticsProvider.appMetrica: AppMetricaAdapter(),
     AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()..setAutoLogAppEventsEnabled(enableAutoLogging)),
+    AnalyticsProvider.branch: BranchAnalyticsAdapter(),
   } {
     if (enabledProviders.isEmpty) {
       _activeProviders = _allProviders.values.toList();
