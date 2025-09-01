@@ -1,7 +1,9 @@
 import 'package:analytics_manager/src/index.dart';
 
 class FacebookAdapter implements AnalyticsService {
-  FacebookAdapter(this._analytics, {required this.logger});
+  FacebookAdapter(this._analytics, {required this.logger}) {
+    _initNativeLogListener();
+  }
 
   final FacebookAppEvents _analytics;
 
@@ -9,6 +11,23 @@ class FacebookAdapter implements AnalyticsService {
 
   @override
   final AnalysisLogger logger;
+
+
+  static const MethodChannel _fbChannel = MethodChannel('flutter.oddbit.id/facebook_app_events');
+
+  void _initNativeLogListener() {
+    _fbChannel.setMethodCallHandler((call) async {
+      if (call.method == 'onLog') {
+        final message = call.arguments['message'] as String?;
+        if (message != null && message.isNotEmpty) {
+          logger.log(
+            source: 'Facebook SDK',
+            text: message,
+          );
+        }
+      }
+    });
+  }
 
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {

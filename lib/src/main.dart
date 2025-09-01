@@ -1,12 +1,9 @@
-import 'package:analytics_manager/src/logger/default_logger.dart';
-
 import 'index.dart';
 
 class AnalyticsManager implements AnalyticsService {
   final Map<AnalyticsProvider, AnalyticsService> _allProviders;
   late final List<AnalyticsService> _activeProviders;
   Map<String, String> _schema = {};
-
   @override
   final AnalysisLogger logger;
 
