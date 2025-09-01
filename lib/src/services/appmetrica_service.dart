@@ -1,7 +1,11 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'analytics_service.dart';
+import 'package:analytics_manager/src/index.dart';
 
 class AppMetricaAdapter implements AnalyticsService {
+  AppMetricaAdapter({required this.logger});
+
+  @override
+  final AnalysisLogger logger;
+
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
     await AppMetrica.reportEventWithMap(name, params);

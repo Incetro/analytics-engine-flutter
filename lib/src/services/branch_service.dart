@@ -1,11 +1,12 @@
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
-
-import 'analytics_service.dart';
+import 'package:analytics_manager/src/index.dart';
 
 class BranchAnalyticsAdapter implements AnalyticsService {
-  BranchAnalyticsAdapter() {
+  BranchAnalyticsAdapter({required this.logger}) {
     FlutterBranchSdk.init();
   }
+
+  @override
+  final AnalysisLogger logger;
 
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {

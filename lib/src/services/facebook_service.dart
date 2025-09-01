@@ -1,14 +1,14 @@
-import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:flutter/foundation.dart';
-
-import 'analytics_service.dart';
+import 'package:analytics_manager/src/index.dart';
 
 class FacebookAdapter implements AnalyticsService {
-  FacebookAdapter(this._analytics);
+  FacebookAdapter(this._analytics, {required this.logger});
 
   final FacebookAppEvents _analytics;
 
   final Map<String, String?> _userData = {};
+
+  @override
+  final AnalysisLogger logger;
 
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
@@ -115,14 +115,20 @@ class FacebookAdapter implements AnalyticsService {
         default:
           _analytics.logEvent(name: name, parameters: params);
       }
-      debugPrint(
-        "✅ [FacebookAdapter] Event sent → "
-        "name: '$name', params: ${params ?? {}}",
+
+      logger.logSuccess(
+        text: 'Event sent', 
+        source: 'Facebook Adapter',
+        eventName: name,
+        params: params,
       );
     } catch (e, stack) {
-       debugPrint(
-        "❌ [FacebookAdapter] Failed to send event → "
-        "name: '$name', error: $e\n$stack",
+      logger.logError(
+        source: 'Facebook Adapter',
+        text: 'Failed to send event',
+        stack: stack,
+        eventName: name,
+        params: params,
       );
     }
     

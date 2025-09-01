@@ -1,10 +1,12 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'analytics_service.dart';
+import 'package:analytics_manager/src/index.dart';
 
 class FirebaseAnalyticsAdapter implements AnalyticsService {
   final FirebaseAnalytics _analytics;
 
-  FirebaseAnalyticsAdapter(this._analytics);
+  FirebaseAnalyticsAdapter(this._analytics, {required this.logger});
+
+  @override
+  final AnalysisLogger logger;
 
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) {

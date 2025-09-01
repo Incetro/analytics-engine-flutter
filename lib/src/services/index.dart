@@ -1,4 +1,9 @@
 export 'firebase_service.dart';
 export 'appmetrica_service.dart';
 export 'facebook_service.dart';
+export 'branch_service.dart';
 export 'analytics_service.dart';
+export 'package:firebase_analytics/firebase_analytics.dart';
+export 'package:facebook_app_events/facebook_app_events.dart';
+export 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
+export 'package:appmetrica_plugin/appmetrica_plugin.dart';

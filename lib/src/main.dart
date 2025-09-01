@@ -1,22 +1,26 @@
-import 'package:analytics_manager/src/services/branch_service.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
+import 'package:analytics_manager/src/logger/default_logger.dart';
 
-import 'services/index.dart';
-import 'utils/providers.dart';
+import 'index.dart';
 
 class AnalyticsManager implements AnalyticsService {
   final Map<AnalyticsProvider, AnalyticsService> _allProviders;
   late final List<AnalyticsService> _activeProviders;
   Map<String, String> _schema = {};
 
-  AnalyticsManager({required List<AnalyticsProvider> enabledProviders, bool enableAutoLogging = false})
-  : _allProviders = {
-    AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance),
-    AnalyticsProvider.appMetrica: AppMetricaAdapter(),
-    AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()..setAutoLogAppEventsEnabled(enableAutoLogging)),
-    AnalyticsProvider.branch: BranchAnalyticsAdapter(),
+  @override
+  final AnalysisLogger logger;
+
+  AnalyticsManager({
+    required List<AnalyticsProvider> enabledProviders, 
+    bool enableAutoLogging = false,
+    AnalysisLogger? logger,
+  })
+  : logger = logger ?? DefaultLogger.instance, 
+  _allProviders = {
+    AnalyticsProvider.firebase: FirebaseAnalyticsAdapter(FirebaseAnalytics.instance, logger: logger ?? DefaultLogger.instance),
+    AnalyticsProvider.appMetrica: AppMetricaAdapter(logger: logger ?? DefaultLogger.instance),
+    AnalyticsProvider.facebook: FacebookAdapter(FacebookAppEvents()..setAutoLogAppEventsEnabled(enableAutoLogging), logger: logger ?? DefaultLogger.instance),
+    AnalyticsProvider.branch: BranchAnalyticsAdapter(logger: logger ?? DefaultLogger.instance),
   } {
     if (enabledProviders.isEmpty) {
       _activeProviders = _allProviders.values.toList();
@@ -25,9 +29,11 @@ class AnalyticsManager implements AnalyticsService {
           .map((p) => _allProviders[p]!)
           .toList();
     }
-    debugPrint(
-        '✅ [Analytics manager]  → STARTED',
-      );
+
+    logger!.log(
+      source: 'Analytics manager',
+      text: 'STARTED'
+    );
   }
 
   void setSchema(Map<String, String> schema) {
