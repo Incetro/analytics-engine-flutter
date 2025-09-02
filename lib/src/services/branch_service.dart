@@ -19,6 +19,13 @@ class BranchAnalyticsAdapter implements AnalyticsService {
     }
 
     FlutterBranchSdk.trackContentWithoutBuo(branchEvent: event);
+
+    logger.logSuccess(
+        text: 'Event sent', 
+        source: 'Branch Adapter',
+        eventName: name,
+        params: params,
+      );
   }
 
   @override

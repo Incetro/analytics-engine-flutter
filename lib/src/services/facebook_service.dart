@@ -12,7 +12,6 @@ class FacebookAdapter implements AnalyticsService {
   @override
   final AnalysisLogger logger;
 
-
   static const MethodChannel _fbChannel = MethodChannel('flutter.oddbit.id/facebook_app_events');
 
   void _initNativeLogListener() {
